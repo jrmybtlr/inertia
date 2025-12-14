@@ -41,6 +41,18 @@ export default function inertiaAstro(options: InertiaAstroOptions): AstroIntegra
           'page',
           `window.__INERTIA_ASTRO_CONFIG__ = ${JSON.stringify(config)};`,
         )
+
+        // Configure Vite to dedupe framework packages
+        // This ensures that dynamic imports (from the Astro client) and static imports
+        // (from user's page components) resolve to the same module instance.
+        // Without this, module-level state like headManager won't be shared properly.
+        updateConfig({
+          vite: {
+            resolve: {
+              dedupe: ['vue', '@inertiajs/vue3', '@inertiajs/react', '@inertiajs/svelte', '@inertiajs/core'],
+            },
+          },
+        })
       },
     },
   }

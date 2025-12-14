@@ -1,0 +1,29 @@
+---
+// Catch-all route for Inertia app pages
+// All requests to /app/* will be handled here and rendered via Inertia
+import AppLayout from '../../layouts/AppLayout.astro'
+
+// Disable prerendering - this route needs to be server-rendered
+export const prerender = false
+---
+
+<AppLayout />
+
+<script>
+  import { initInertia } from '@inertiajs/astro/client/vue'
+
+  initInertia({
+    id: 'app',
+    resolve: (name) => {
+      const pages = import.meta.glob('../../inertia-pages/**/*.vue', { eager: true })
+      const page = pages[`../../inertia-pages/${name}.vue`]
+
+      if (!page) {
+        throw new Error(`Page not found: ${name}`)
+      }
+
+      return page
+    },
+    title: (title) => `${title} - Astro + Inertia`,
+  })
+</script>

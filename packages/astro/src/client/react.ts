@@ -37,9 +37,9 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
   const progress = options.progress ?? config?.progress
 
   // Fetch initial page data from Laravel if not provided
-  let initialPage = options.initialPage
+  let initialPage: Page<SharedProps> | undefined = options.initialPage
   if (!initialPage) {
-    initialPage = await fetchInitialPage<SharedProps>(laravelUrl, includeCredentials)
+    initialPage = (await fetchInitialPage<SharedProps>(laravelUrl, includeCredentials)) ?? undefined
   }
 
   if (!initialPage) {
@@ -89,7 +89,8 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
   }
 
   const root = createRoot(islandEl)
-  root.render(createElement(App, props))
+  // Cast App to any to handle React 18/19 type differences
+  root.render(createElement(App as any, props))
 
   // Decrypt history if needed
   router.decryptHistory().catch(() => {})

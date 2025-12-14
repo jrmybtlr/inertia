@@ -9,6 +9,7 @@
     "dev:vue": "cd packages/vue3 && pnpm run dev",
     "dev:react": "cd packages/react && pnpm run dev",
     "dev:svelte": "cd packages/svelte && pnpm run dev",
+    "dev:astro": "cd packages/astro && pnpm run dev",
     "dev:test-app": "pnpx concurrently -c \"#61dafb,#d43008,#32a06f\" \"pnpm dev:test-app:react\" \"pnpm dev:test-app:svelte\" \"pnpm dev:test-app:vue\" --names=react,svelte,vue",
     "dev:test-app:react": "pnpx concurrently -c \"#c4b5fd,#ffa800\" \"cd tests/app && PACKAGE=react pnpm serve:watch\" \"cd packages/react/test-app && pnpm run dev\" --names=server,vite",
     "dev:test-app:svelte": "pnpx concurrently -c \"#c4b5fd,#ffa800\" \"cd tests/app && PACKAGE=svelte pnpm serve:watch\" \"cd packages/svelte/test-app && pnpm run dev\" --names=server,vite",
@@ -32,6 +33,7 @@
     "playground:svelte4": "cd playgrounds/svelte4 && ./init.sh && composer run dev",
     "playground:svelte5": "cd playgrounds/svelte5 && ./init.sh && composer run dev",
     "playground:vue": "cd playgrounds/vue3 && ./init.sh && composer run dev",
+    "playground:astro": "cd playgrounds/astro && ./init.sh && composer run dev",
     "format": "prettier --write ."
   },
   "dependencies": {

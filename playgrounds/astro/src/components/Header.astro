@@ -1,0 +1,21 @@
+---
+// Static Astro header - renders on the server, no JavaScript
+---
+
+<header class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-4 text-white shadow-lg">
+  <div class="mx-auto flex max-w-7xl items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <svg class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" fill="none"/>
+      </svg>
+      <span class="text-xl font-bold">Astro + Inertia</span>
+    </div>
+    <nav class="flex items-center space-x-6">
+      <a href="/" class="hover:text-indigo-200 transition-colors">Home</a>
+      <a href="/about" class="hover:text-indigo-200 transition-colors">About</a>
+      <a href="/app" class="rounded-lg bg-white/20 px-4 py-2 font-medium hover:bg-white/30 transition-colors">
+        Launch App
+      </a>
+    </nav>
+  </div>
+</header>

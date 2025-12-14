@@ -1,0 +1,67 @@
+---
+// Static about page - fully rendered by Astro
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="About - Astro + Inertia Playground">
+  <div class="mx-auto max-w-4xl px-8 py-16">
+    <h1 class="text-4xl font-bold text-slate-900">About This Playground</h1>
+
+    <div class="mt-8 space-y-6 text-lg text-slate-600">
+      <p>
+        This playground demonstrates the <strong class="text-slate-900">Astro + Inertia.js</strong> integration,
+        which allows you to build hybrid applications where Astro handles static content and Inertia
+        powers the dynamic, authenticated portions of your app.
+      </p>
+
+      <h2 class="mt-12 text-2xl font-bold text-slate-900">Use Cases</h2>
+      <ul class="ml-6 list-disc space-y-2">
+        <li>
+          <strong>Marketing sites with dashboards:</strong> Static landing pages, pricing, and docs
+          with an authenticated admin panel or user dashboard.
+        </li>
+        <li>
+          <strong>Gradual migration:</strong> Move parts of a Laravel app to Astro while keeping
+          the interactive core powered by Inertia.
+        </li>
+        <li>
+          <strong>SEO + Interactivity:</strong> Blog and documentation in Astro for SEO,
+          app features in Inertia for rich interactivity.
+        </li>
+      </ul>
+
+      <h2 class="mt-12 text-2xl font-bold text-slate-900">Architecture</h2>
+      <p>
+        In this setup:
+      </p>
+      <ul class="ml-6 list-disc space-y-2">
+        <li>
+          <strong>Astro</strong> owns the page shell (HTML, header, footer, navigation)
+          and serves static pages like this one.
+        </li>
+        <li>
+          <strong>Inertia.js</strong> runs inside an "island" and handles the interactive
+          application region, fetching page data from your Laravel backend.
+        </li>
+        <li>
+          <strong>Laravel</strong> serves as the backend, providing Inertia responses
+          with page components and props.
+        </li>
+      </ul>
+
+      <div class="mt-12 rounded-lg bg-indigo-50 p-6">
+        <h3 class="font-semibold text-indigo-900">Ready to try it?</h3>
+        <p class="mt-2 text-indigo-800">
+          Make sure you have the Vue 3 playground's Laravel backend running on port 8000,
+          then click the button below to enter the Inertia-powered app.
+        </p>
+        <a
+          href="/app"
+          class="mt-4 inline-block rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700 transition-colors"
+        >
+          Launch App
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

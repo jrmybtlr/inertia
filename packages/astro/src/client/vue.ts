@@ -37,9 +37,9 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
   const progress = options.progress ?? config?.progress
 
   // Fetch initial page data from Laravel if not provided
-  let initialPage = options.initialPage
+  let initialPage: Page<SharedProps> | undefined = options.initialPage
   if (!initialPage) {
-    initialPage = await fetchInitialPage<SharedProps>(laravelUrl, includeCredentials)
+    initialPage = (await fetchInitialPage<SharedProps>(laravelUrl, includeCredentials)) ?? undefined
   }
 
   if (!initialPage) {
@@ -51,7 +51,9 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
   const [vue, inertiaVue] = await Promise.all([import('vue'), import('@inertiajs/vue3')])
 
   const { createApp, h } = vue
-  const { App, plugin } = inertiaVue
+  const { App } = inertiaVue
+  // Access plugin from the module (not exported in all versions)
+  const plugin = (inertiaVue as any).plugin
 
   // Resolve the initial component
   const resolveComponent = createComponentResolver(options.resolve)
