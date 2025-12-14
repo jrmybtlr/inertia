@@ -1,0 +1,100 @@
+{
+  "name": "@inertiajs/astro",
+  "version": "2.3.1",
+  "license": "MIT",
+  "description": "The Astro adapter for Inertia.js - Use Inertia as an island within Astro",
+  "contributors": [
+    "Jonathan Reinink <jonathan@reinink.ca>"
+  ],
+  "homepage": "https://inertiajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inertiajs/inertia.git",
+    "directory": "packages/astro"
+  },
+  "bugs": {
+    "url": "https://github.com/inertiajs/inertia/issues"
+  },
+  "keywords": [
+    "astro",
+    "inertia",
+    "inertiajs",
+    "laravel",
+    "react",
+    "vue",
+    "svelte"
+  ],
+  "files": [
+    "dist",
+    "types"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    },
+    "./InertiaIsland.astro": "./src/InertiaIsland.astro",
+    "./client/react": {
+      "types": "./types/client/react.d.ts",
+      "import": "./dist/client/react.esm.js",
+      "require": "./dist/client/react.js"
+    },
+    "./client/vue": {
+      "types": "./types/client/vue.d.ts",
+      "import": "./dist/client/vue.esm.js",
+      "require": "./dist/client/vue.js"
+    },
+    "./client/svelte": {
+      "types": "./types/client/svelte.d.ts",
+      "import": "./dist/client/svelte.esm.js",
+      "require": "./dist/client/svelte.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "client/react": ["types/client/react.d.ts"],
+      "client/vue": ["types/client/vue.d.ts"],
+      "client/svelte": ["types/client/svelte.d.ts"]
+    }
+  },
+  "scripts": {
+    "build": "pnpm clean && ./build.js && tsc",
+    "build:with-deps": "./build.js --with-deps",
+    "clean": "rm -rf types && rm -rf dist",
+    "dev": "pnpx concurrently -c \"#ffcf00,#3178c6\" \"pnpm dev:build\" \"pnpm dev:types\" --names build,types",
+    "dev:build": "./build.js --watch",
+    "dev:types": "tsc --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@inertiajs/core": "workspace:*"
+  },
+  "devDependencies": {
+    "astro": "^5.9.1",
+    "esbuild": "^0.25.12",
+    "esbuild-node-externals": "^1.20.1",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "astro": "^4.0.0 || ^5.0.0",
+    "@inertiajs/react": "^2.0.0",
+    "@inertiajs/vue3": "^2.0.0",
+    "@inertiajs/svelte": "^2.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "vue": "^3.0.0",
+    "svelte": "^4.0.0 || ^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@inertiajs/react": { "optional": true },
+    "@inertiajs/vue3": { "optional": true },
+    "@inertiajs/svelte": { "optional": true },
+    "react": { "optional": true },
+    "react-dom": { "optional": true },
+    "vue": { "optional": true },
+    "svelte": { "optional": true }
+  }
+}

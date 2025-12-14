@@ -1,0 +1,76 @@
+---
+/**
+ * InertiaIsland Component
+ *
+ * This component renders a mount point for Inertia.js within an Astro page.
+ * Inertia will hydrate this element on the client-side, fetching page data
+ * from your Laravel backend.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import { InertiaIsland } from '@inertiajs/astro/InertiaIsland.astro'
+ * ---
+ *
+ * <Layout>
+ *   <InertiaIsland fallback="Loading dashboard..." />
+ * </Layout>
+ * ```
+ */
+
+export interface Props {
+  /**
+   * The ID of the mount element
+   * @default 'app'
+   */
+  id?: string
+
+  /**
+   * CSS class to apply to the mount element
+   */
+  class?: string
+
+  /**
+   * Content to show while Inertia is loading
+   * Can be a simple string or slot content
+   */
+  fallback?: string
+}
+
+const { id = 'app', class: className, fallback } = Astro.props
+---
+
+<div
+  id={id}
+  class:list={[className, 'inertia-island']}
+  data-inertia-island
+>
+  {fallback ? (
+    <div class="inertia-island-loading">{fallback}</div>
+  ) : (
+    <slot>
+      <div class="inertia-island-loading">Loading...</div>
+    </slot>
+  )}
+</div>
+
+<style>
+  .inertia-island {
+    /* Ensure the island takes up space while loading */
+    min-height: 100px;
+  }
+
+  .inertia-island-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: inherit;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+
+  /* Hide loading state once Inertia has mounted */
+  .inertia-island[data-inertia-mounted] .inertia-island-loading {
+    display: none;
+  }
+</style>
