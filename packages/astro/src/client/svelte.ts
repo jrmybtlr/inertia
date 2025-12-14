@@ -49,7 +49,7 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
 
   // Dynamically import Svelte Inertia adapter
   const inertiaSvelte = await import('@inertiajs/svelte')
-  const { default: App } = inertiaSvelte
+  const { App } = inertiaSvelte
 
   // Resolve the initial component
   const resolveComponent = createComponentResolver(options.resolve)
