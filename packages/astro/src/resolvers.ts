@@ -34,7 +34,7 @@ export interface CreateResolverOptions {
  *
  * @example
  * ```ts
- * import { createResolver } from '@inertiajs/astro/resolvers'
+ * import { createResolver } from '@inertiajs/astro'
  *
  * const resolve = createResolver({
  *   pages: import.meta.glob('./pages/**\/*.vue', { eager: true }),
@@ -95,7 +95,7 @@ export function createResolver(options: CreateResolverOptions): ComponentResolve
  *
  * @example
  * ```ts
- * import { createSimpleResolver } from '@inertiajs/astro/resolvers'
+ * import { createSimpleResolver } from '@inertiajs/astro'
  *
  * const resolve = createSimpleResolver({
  *   pages: import.meta.glob('./pages/**\/*.vue', { eager: true }),

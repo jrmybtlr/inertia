@@ -39,7 +39,7 @@ In your Astro page or layout:
 ```astro
 ---
 import Layout from '../layouts/Layout.astro'
-import { InertiaIsland } from '@inertiajs/astro/InertiaIsland.astro'
+import InertiaIsland from '@inertiajs/astro/InertiaIsland.astro'
 ---
 
 <Layout>
@@ -95,7 +95,7 @@ initInertia({
 
 ## Smart Component Resolver
 
-The smart component resolver supports `.client` and `.server` naming conventions for better developer experience:
+The smart component resolver supports `.client` and `.server` naming conventions for better developer experience. The resolvers are exported from both the main package and from the framework-specific client modules.
 
 - `Component.client.vue` → client-side rendered
 - `Component.server.vue` → server-side rendered
@@ -103,8 +103,15 @@ The smart component resolver supports `.client` and `.server` naming conventions
 
 ### Using createResolver
 
+You can import the resolver from the main package or from the client module:
+
 ```ts
 // src/client/app.ts
+// Option 1: Import from main package
+import { createResolver } from '@inertiajs/astro'
+import { initInertia } from '@inertiajs/astro/client/vue'
+
+// Option 2: Import from client module (both available)
 import { initInertia, createResolver } from '@inertiajs/astro/client/vue'
 
 const resolve = createResolver({
@@ -122,6 +129,7 @@ For simpler use cases:
 
 ```ts
 // src/client/app.ts
+// Can import from main package or client module
 import { initInertia, createSimpleResolver } from '@inertiajs/astro/client/vue'
 
 const resolve = createSimpleResolver({
