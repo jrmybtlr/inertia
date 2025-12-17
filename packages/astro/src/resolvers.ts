@@ -12,7 +12,8 @@ export interface CreateResolverOptions {
 
   /**
    * File extensions to support
-   * @default ['.vue'] for Vue, ['.tsx', '.jsx'] for React, ['.svelte'] for Svelte
+   * @default ['.vue']
+   * @example ['.vue'] for Vue, ['.tsx', '.jsx'] for React, ['.svelte'] for Svelte
    */
   extensions?: string[]
 
@@ -48,26 +49,30 @@ export function createResolver(options: CreateResolverOptions): ComponentResolve
   const { pages, extensions = ['.vue'], defaultMode = 'server' } = options
 
   return (name: string) => {
+    // Helper function to generate search paths for a given base directory
+    const generatePaths = (baseDir: string): string[] => {
+      const paths: string[] = []
+      for (const ext of extensions) {
+        // Try with .client suffix first
+        paths.push(`${baseDir}/${name}.client${ext}`)
+        // Then .server suffix
+        paths.push(`${baseDir}/${name}.server${ext}`)
+        // Finally, try without suffix (will use defaultMode)
+        paths.push(`${baseDir}/${name}${ext}`)
+      }
+      return paths
+    }
+
     // Try to find the component with various naming conventions
     // Priority order:
-    // 1. Exact match with .client suffix
-    // 2. Exact match with .server suffix
-    // 3. Exact match without suffix (uses defaultMode)
-    // 4. Try all extensions with each convention
-
-    const searchPaths: string[] = []
-
-    // For each extension, try the different conventions
-    for (const ext of extensions) {
-      // Try with .client suffix first
-      searchPaths.push(`./pages/${name}.client${ext}`)
-
-      // Then .server suffix
-      searchPaths.push(`./pages/${name}.server${ext}`)
-
-      // Finally, try without suffix (will use defaultMode)
-      searchPaths.push(`./pages/${name}${ext}`)
-    }
+    // 1. ./pages directory (lowercase)
+    // 2. ./Pages directory (capitalized)
+    // 3. Root directory (./)
+    const searchPaths: string[] = [
+      ...generatePaths('./pages'),
+      ...generatePaths('./Pages'),
+      ...generatePaths('.'),
+    ]
 
     // Try to find the first matching component
     for (const path of searchPaths) {
@@ -76,24 +81,7 @@ export function createResolver(options: CreateResolverOptions): ComponentResolve
       }
     }
 
-    // If not found in ./pages, try other common patterns
-    const alternativePaths: string[] = []
-    for (const ext of extensions) {
-      alternativePaths.push(`./Pages/${name}.client${ext}`)
-      alternativePaths.push(`./Pages/${name}.server${ext}`)
-      alternativePaths.push(`./Pages/${name}${ext}`)
-      alternativePaths.push(`./${name}.client${ext}`)
-      alternativePaths.push(`./${name}.server${ext}`)
-      alternativePaths.push(`./${name}${ext}`)
-    }
-
-    for (const path of alternativePaths) {
-      if (pages[path]) {
-        return pages[path]
-      }
-    }
-
-    // Component not found
+    // Component not found - provide helpful error message with all attempted paths
     throw new Error(
       `Component "${name}" not found. Make sure to import it with the correct path. Tried: ${searchPaths.join(', ')}`,
     )
