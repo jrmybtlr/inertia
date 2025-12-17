@@ -2,6 +2,7 @@ import type { AstroIntegration } from 'astro'
 import type { InertiaAstroConfig, InertiaAstroOptions } from './types'
 
 export type { InertiaAstroOptions, InertiaIslandProps, InitInertiaOptions, ComponentResolver } from './types'
+export { createResolver, createSimpleResolver, type CreateResolverOptions } from './resolvers'
 
 /**
  * Astro integration for Inertia.js
