@@ -105,9 +105,9 @@
       router.init({
         initialPage: pageData,
         resolveComponent,
-        swapComponent: async () => {
-          // Handled by App component
-        },
+        // swapComponent is handled internally by the App component
+        // We provide an empty function here as it's required by the router.init API
+        swapComponent: async () => {},
       })
 
       // Setup progress bar

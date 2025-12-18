@@ -164,9 +164,9 @@ export default defineComponent({
         router.init({
           initialPage,
           resolveComponent,
-          swapComponent: async () => {
-            // Handled by App component
-          },
+          // swapComponent is handled internally by the App component
+          // We provide an empty function here as it's required by the router.init API
+          swapComponent: async () => {},
         })
 
         // Setup progress bar
@@ -198,7 +198,9 @@ export default defineComponent({
     })
 
     onBeforeUnmount(() => {
-      // Cleanup if needed
+      // Note: Currently, Inertia's router doesn't provide a cleanup/destroy method
+      // If multiple islands are being mounted/unmounted frequently, this could be a memory concern
+      // For now, we rely on garbage collection when the component is destroyed
     })
 
     const className = computed(() => {
