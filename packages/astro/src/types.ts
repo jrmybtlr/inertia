@@ -1,4 +1,4 @@
-import type { Page, PageProps, VisitOptions } from '@inertiajs/core'
+import type { Page, PageProps } from '@inertiajs/core'
 
 export type InertiaFramework = 'react' | 'vue' | 'svelte'
 

@@ -68,11 +68,7 @@ export function createResolver(options: CreateResolverOptions): ComponentResolve
     // 1. ./pages directory (lowercase)
     // 2. ./Pages directory (capitalized)
     // 3. Root directory (./)
-    const searchPaths: string[] = [
-      ...generatePaths('./pages'),
-      ...generatePaths('./Pages'),
-      ...generatePaths('.'),
-    ]
+    const searchPaths: string[] = [...generatePaths('./pages'), ...generatePaths('./Pages'), ...generatePaths('.')]
 
     // Try to find the first matching component
     for (const path of searchPaths) {
@@ -103,10 +99,7 @@ export function createResolver(options: CreateResolverOptions): ComponentResolve
  * })
  * ```
  */
-export function createSimpleResolver(options: {
-  pages: Record<string, any>
-  extension: string
-}): ComponentResolver {
+export function createSimpleResolver(options: { pages: Record<string, any>; extension: string }): ComponentResolver {
   const { pages, extension } = options
 
   return (name: string) => {
