@@ -13,5 +13,23 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        // Proxy Inertia XHR requests to Laravel
+        '/app': {
+          target: 'http://localhost:8000',
+          changeOrigin: true,
+          bypass: (req) => {
+            // Only proxy if it's an Inertia request (XHR with X-Inertia header)
+            if (req.headers['x-inertia']) {
+              return null // proxy this request
+            }
+            return req.url // don't proxy, let Astro handle it
+          },
+        },
+      },
+    },
   },
 })
+
+

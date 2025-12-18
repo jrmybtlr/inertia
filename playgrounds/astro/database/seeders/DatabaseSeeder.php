@@ -14,3 +14,5 @@ class DatabaseSeeder extends Seeder
         // No seeding needed for this demo
     }
 }
+
+

@@ -39,3 +39,5 @@ fi
 # Ensure database is up to date
 echo "Running any pending migrations..."
 php artisan migrate
+
+

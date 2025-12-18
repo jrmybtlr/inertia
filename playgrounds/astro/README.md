@@ -89,3 +89,5 @@ composer run dev
 - `routes/web.php` - Inertia routes (all prefixed with `/app`)
 - `config/cors.php` - CORS configuration for Astro frontend
 - `app/Http/Middleware/HandleInertiaRequests.php` - Inertia middleware
+
+
