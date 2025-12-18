@@ -4,7 +4,7 @@ Inertia.js lets you quickly build modern single-page React, Vue and Svelte apps 
 
 ## New: Inertia Islands (Native Approach)
 
-Inertia now supports **native islands** - embed Inertia.js applications as independent regions within a larger page without requiring Astro or other meta-frameworks. Perfect for hybrid apps, gradual migrations, or multi-region applications.
+Inertia now supports **native islands** - embed Inertia.js applications as independent regions within a larger page. Perfect for hybrid apps, gradual migrations, or multi-region applications.
 
 ```tsx
 import { InertiaIsland } from '@inertiajs/react'

@@ -1,6 +1,6 @@
 # Inertia Islands - Native Approach
 
-This document describes the **native Inertia island** functionality that allows you to embed Inertia.js applications as independent "islands" within a larger page, without requiring Astro or any other meta-framework.
+This document describes the **native Inertia island** functionality that allows you to embed Inertia.js applications as independent "islands" within a larger page.
 
 ## What are Inertia Islands?
 
@@ -10,7 +10,7 @@ Inertia Islands allow you to create **hybrid applications** where:
 - Multiple islands can coexist on the same page
 - Each island has its own router and state
 
-This is similar to the [Astro Islands](https://docs.astro.build/en/concepts/islands/) concept, but built directly into Inertia.js itself.
+This pattern enables you to combine static content with dynamic, interactive regions powered by Inertia.js.
 
 ## Use Cases
 
@@ -292,15 +292,158 @@ You can have multiple independent islands on the same page:
 
 **Important:** When using multiple islands, provide unique `id` props for each.
 
-## Comparison with Astro Integration
+## Component and Layout Control
 
-| Feature | Native Islands | Astro Integration |
-|---------|---------------|-------------------|
-| Framework Required | None (just React/Vue/Svelte) | Astro |
-| Setup Complexity | Simple | Medium |
-| Static Shell | Manual HTML/Components | Astro components |
-| SSR Support | No | Yes (via Astro) |
-| Use Case | Hybrid SPA apps | Static-first sites |
+### Layouts
+
+Island components fully support Inertia's layout system. You can define layouts on your page components just like in standard Inertia:
+
+**React:**
+```tsx
+// Pages/Dashboard.tsx
+import { Head } from '@inertiajs/react'
+import AppLayout from '../Layouts/AppLayout'
+
+function Dashboard({ user }) {
+  return (
+    <>
+      <Head title="Dashboard" />
+      <h1>Welcome, {user.name}!</h1>
+    </>
+  )
+}
+
+// Single layout
+Dashboard.layout = AppLayout
+
+// Or multiple nested layouts
+Dashboard.layout = [MainLayout, AppLayout]
+
+export default Dashboard
+```
+
+**Vue:**
+```vue
+<!-- Pages/Dashboard.vue -->
+<template>
+  <div>
+    <Head title="Dashboard" />
+    <h1>Welcome, {{ user.name }}!</h1>
+  </div>
+</template>
+
+<script>
+import AppLayout from '../Layouts/AppLayout.vue'
+
+export default {
+  layout: AppLayout, // or [MainLayout, AppLayout] for nesting
+}
+</script>
+```
+
+**Svelte:**
+```svelte
+<!-- Pages/Dashboard.svelte -->
+<script context="module">
+  import AppLayout from '../Layouts/AppLayout.svelte'
+  export const layout = AppLayout // or [MainLayout, AppLayout]
+</script>
+
+<script>
+  export let user
+</script>
+
+<h1>Welcome, {user.name}!</h1>
+```
+
+### Client-Only vs Server-Rendered Components
+
+**Client-Only Rendering (Default)**
+
+Islands render on the client by default. This is ideal for:
+- Dynamic, user-specific content
+- Components that require browser APIs
+- Applications that don't need SEO for island content
+
+```tsx
+<InertiaIsland
+  resolve={(name) => import(`./Pages/${name}.tsx`)}
+  url="/app/dashboard"
+/>
+```
+
+**Pre-rendering with Initial Data**
+
+To avoid the loading flash and improve perceived performance, pass `initialPage` data:
+
+```tsx
+// Server-side (Laravel example)
+Route::get('/app', function () {
+  $initialPageData = [
+    'component' => 'Dashboard',
+    'props' => ['user' => auth()->user()],
+    'url' => '/app/dashboard',
+    'version' => '1.0',
+  ];
+  
+  return view('app', ['initialPageData' => $initialPageData]);
+});
+
+// Client-side
+<InertiaIsland
+  resolve={(name) => import(`./Pages/${name}.tsx`)}
+  initialPage={window.__INITIAL_PAGE_DATA__}
+/>
+```
+
+**Conditional Rendering**
+
+Control what renders on server vs client:
+
+```tsx
+// In your page component
+function Dashboard({ user }) {
+  const [clientData, setClientData] = useState(null)
+  
+  useEffect(() => {
+    // This only runs on the client
+    setClientData(fetchClientOnlyData())
+  }, [])
+  
+  return (
+    <div>
+      {/* Server data (from initial props) */}
+      <h1>Welcome, {user.name}</h1>
+      
+      {/* Client-only data */}
+      {clientData && <UserStats stats={clientData} />}
+    </div>
+  )
+}
+```
+
+### Component Organization
+
+Organize your components based on their usage:
+
+```
+src/
+├── Components/
+│   ├── Static/          # Static components (headers, footers)
+│   │   ├── Header.tsx
+│   │   └── Footer.tsx
+│   ├── Client/          # Client-only components
+│   │   ├── Chart.tsx
+│   │   └── UserWidget.tsx
+│   └── Shared/          # Components used everywhere
+│       └── Button.tsx
+├── Layouts/             # Layout components for islands
+│   ├── AppLayout.tsx
+│   └── GuestLayout.tsx
+└── Pages/               # Inertia page components
+    ├── Dashboard.tsx
+    └── Settings.tsx
+```
 
 ## Performance Considerations
 
@@ -320,44 +463,11 @@ The island component adds minimal overhead (~2KB gzipped) beyond standard Inerti
 
 ## Limitations
 
-1. **No SSR**: Islands render client-side only. For SSR, use the Astro integration or standard Inertia.
+1. **No SSR**: Islands render client-side only. For server-side rendering, use standard Inertia with SSR setup.
 2. **Single Router**: Only one router instance per page. Multiple islands share the same router.
 3. **Session Sharing**: All islands share the same browser session and cookies.
 
 ## Migration Guide
-
-### From Astro Islands
-
-If you're using `@inertiajs/astro` and want to switch to native islands:
-
-**Before (Astro):**
-```astro
----
-import InertiaIsland from '@inertiajs/astro/InertiaIsland.astro'
----
-
-<Layout>
-  <InertiaIsland fallback="Loading..." />
-</Layout>
-
-<script>
-  import { initInertia } from '@inertiajs/astro/client/react'
-  initInertia({ resolve: ... })
-</script>
-```
-
-**After (Native):**
-```tsx
-import { InertiaIsland } from '@inertiajs/react'
-
-function App() {
-  return (
-    <Layout>
-      <InertiaIsland resolve={...} fallback="Loading..." />
-    </Layout>
-  )
-}
-```
 
 ### From Standard Inertia
 
