@@ -1,0 +1,99 @@
+---
+// Static marketing page - fully rendered by Astro, no JavaScript
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Home - Astro + Inertia Playground">
+  <div class="mx-auto max-w-7xl px-8 py-16">
+    <!-- Hero Section -->
+    <section class="text-center">
+      <h1 class="text-5xl font-bold text-slate-900">
+        Astro + <span class="text-indigo-600">Inertia.js</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-xl text-slate-600">
+        The best of both worlds: static, SEO-optimized marketing pages powered by Astro, 
+        with a dynamic, interactive application powered by Inertia.js.
+      </p>
+      <div class="mt-10 flex justify-center gap-4">
+        <a
+          href="/app"
+          class="rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg hover:bg-indigo-700 transition-colors"
+        >
+          Launch App
+        </a>
+        <a
+          href="/about"
+          class="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 shadow hover:bg-slate-50 transition-colors"
+        >
+          Learn More
+        </a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="mt-24 grid gap-8 md:grid-cols-3">
+      <div class="rounded-xl bg-white p-8 shadow-lg">
+        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-xl font-semibold text-slate-900">Lightning Fast</h3>
+        <p class="mt-2 text-slate-600">
+          Static pages are pre-rendered at build time for instant loading. No JavaScript required for marketing pages.
+        </p>
+      </div>
+
+      <div class="rounded-xl bg-white p-8 shadow-lg">
+        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 text-green-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-xl font-semibold text-slate-900">SEO Friendly</h3>
+        <p class="mt-2 text-slate-600">
+          Marketing pages, blog posts, and documentation are fully server-rendered and crawlable by search engines.
+        </p>
+      </div>
+
+      <div class="rounded-xl bg-white p-8 shadow-lg">
+        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-xl font-semibold text-slate-900">Interactive App</h3>
+        <p class="mt-2 text-slate-600">
+          Your authenticated dashboard lives in an Inertia island with full SPA navigation and Vue/React/Svelte components.
+        </p>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="mt-24">
+      <h2 class="text-center text-3xl font-bold text-slate-900">How It Works</h2>
+      <div class="mt-12 rounded-xl bg-slate-800 p-8 text-slate-100">
+        <pre class="overflow-x-auto text-sm"><code>{`
+┌─────────────────────────────────────────────────────────────┐
+│                      Astro Shell                            │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │                    Header (static)                     │  │
+│  └───────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │                  InertiaIsland                         │  │
+│  │  ┌─────────────────────────────────────────────────┐  │  │
+│  │  │     Vue/React/Svelte Component                  │  │  │
+│  │  │     (fetched from Laravel backend)              │  │  │
+│  │  └─────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │                    Footer (static)                     │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+        `}</code></pre>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+

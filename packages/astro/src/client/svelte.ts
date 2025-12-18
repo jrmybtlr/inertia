@@ -37,9 +37,9 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
   const progress = options.progress ?? config?.progress
 
   // Fetch initial page data from Laravel if not provided
-  let initialPage = options.initialPage
+  let initialPage: Page<SharedProps> | undefined = options.initialPage
   if (!initialPage) {
-    initialPage = await fetchInitialPage<SharedProps>(laravelUrl, includeCredentials)
+    initialPage = (await fetchInitialPage<SharedProps>(laravelUrl, includeCredentials)) ?? undefined
   }
 
   if (!initialPage) {
@@ -49,7 +49,7 @@ export async function initInertia<SharedProps extends PageProps = PageProps>(
 
   // Dynamically import Svelte Inertia adapter
   const inertiaSvelte = await import('@inertiajs/svelte')
-  const { default: App } = inertiaSvelte
+  const { App } = inertiaSvelte
 
   // Resolve the initial component
   const resolveComponent = createComponentResolver(options.resolve)
