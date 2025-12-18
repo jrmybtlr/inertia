@@ -49,37 +49,40 @@ export function createResolver(options: CreateResolverOptions): ComponentResolve
   const { pages, extensions = ['.vue'], defaultMode = 'server' } = options
 
   return (name: string) => {
-    // Helper function to generate search paths for a given base directory
-    const generatePaths = (baseDir: string): string[] => {
-      const paths: string[] = []
-      for (const ext of extensions) {
-        // Try with .client suffix first
-        paths.push(`${baseDir}/${name}.client${ext}`)
-        // Then .server suffix
-        paths.push(`${baseDir}/${name}.server${ext}`)
-        // Finally, try without suffix (will use defaultMode)
-        paths.push(`${baseDir}/${name}${ext}`)
-      }
-      return paths
-    }
-
-    // Try to find the component with various naming conventions
-    // Priority order:
+    // Priority order across all directories and extensions:
+    // 1. .client suffix (client-side)
+    // 2. .server suffix (server-side)
+    // 3. No suffix (uses defaultMode)
+    //
+    // Directory priority (for each mode):
     // 1. ./pages directory (lowercase)
     // 2. ./Pages directory (capitalized)
     // 3. Root directory (./)
-    const searchPaths: string[] = [...generatePaths('./pages'), ...generatePaths('./Pages'), ...generatePaths('.')]
+    const modes: Array<'client' | 'server' | 'default'> = ['client', 'server', 'default']
+    const baseDirs = ['./pages', './Pages', '.']
+    const attemptedPaths: string[] = []
 
-    // Try to find the first matching component
-    for (const path of searchPaths) {
-      if (pages[path]) {
-        return pages[path]
+    // Try to find the first matching component following the documented priority
+    for (const mode of modes) {
+      for (const baseDir of baseDirs) {
+        for (const ext of extensions) {
+          const path =
+            mode === 'default'
+              ? `${baseDir}/${name}${ext}`
+              : `${baseDir}/${name}.${mode}${ext}`
+
+          attemptedPaths.push(path)
+
+          if (pages[path]) {
+            return pages[path]
+          }
+        }
       }
     }
 
     // Component not found - provide helpful error message with all attempted paths
     throw new Error(
-      `Component "${name}" not found. Make sure to import it with the correct path. Tried: ${searchPaths.join(', ')}`,
+      `Component "${name}" not found. Make sure to import it with the correct path. Tried: ${attemptedPaths.join(', ')}`,
     )
   }
 }
