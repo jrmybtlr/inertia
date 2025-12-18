@@ -2,6 +2,26 @@
 
 Inertia.js lets you quickly build modern single-page React, Vue and Svelte apps using classic server-side routing and controllers. Find full documentation at [inertiajs.com](https://inertiajs.com/).
 
+## New: Inertia Islands (Native Approach)
+
+Inertia now supports **native islands** - embed Inertia.js applications as independent regions within a larger page without requiring Astro or other meta-frameworks. Perfect for hybrid apps, gradual migrations, or multi-region applications.
+
+```tsx
+import { InertiaIsland } from '@inertiajs/react'
+
+function App() {
+  return (
+    <>
+      <header>Static Header</header>
+      <InertiaIsland resolve={(name) => import(`./Pages/${name}.tsx`)} />
+      <footer>Static Footer</footer>
+    </>
+  )
+}
+```
+
+See [INERTIA_ISLANDS.md](INERTIA_ISLANDS.md) for complete documentation.
+
 ## Contributing
 
 Thank you for considering contributing to Inertia! You can read the contribution guide [here](CONTRIBUTING.md).
