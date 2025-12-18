@@ -95,11 +95,15 @@ initInertia({
 
 ## Smart Component Resolver
 
-The smart component resolver supports `.client` and `.server` naming conventions for better developer experience. The resolvers are exported from both the main package and from the framework-specific client modules.
+The smart component resolver supports `.client` and `.server` naming conventions for better developer experience and code organization. 
 
-- `Component.client.vue` → client-side rendered
-- `Component.server.vue` → server-side rendered
-- `Component.vue` → defaults to server-side rendering
+**Important Note:** These naming conventions are **organizational only**. All Inertia components are client-side rendered by design (that's how Inertia.js works). The `.client` and `.server` suffixes help you organize your codebase but don't change the rendering behavior.
+
+### Naming Convention
+
+- `Component.client.vue` → Organizational marker (e.g., for heavily interactive components)
+- `Component.server.vue` → Organizational marker (e.g., for components that primarily display server data)
+- `Component.vue` → Standard naming without organizational suffix
 
 ### Using createResolver
 
@@ -116,8 +120,7 @@ import { initInertia, createResolver } from '@inertiajs/astro/client/vue'
 
 const resolve = createResolver({
   pages: import.meta.glob('../pages/**/*.vue', { eager: true }),
-  extensions: ['.vue'],
-  defaultMode: 'server', // Components without .client or .server suffix default to server
+  extensions: ['.vue']
 })
 
 initInertia({ resolve })
@@ -134,7 +137,7 @@ import { initInertia, createSimpleResolver } from '@inertiajs/astro/client/vue'
 
 const resolve = createSimpleResolver({
   pages: import.meta.glob('../pages/**/*.vue', { eager: true }),
-  extension: '.vue',
+  extension: '.vue'
 })
 
 initInertia({ resolve })
@@ -164,9 +167,9 @@ Now you can use a flat structure with naming conventions:
 ```
 src/
   pages/
-    Dashboard.client.vue     # Client-side rendered
-    Profile.server.vue       # Server-side rendered
-    Settings.vue             # Defaults to server-side
+    Dashboard.client.vue     # Organizational marker for interactive component
+    Profile.server.vue       # Organizational marker for data-display component
+    Settings.vue             # Standard naming
 ```
 
 ## Multiple Frameworks
@@ -180,7 +183,7 @@ import { createResolver } from '@inertiajs/astro/client/vue'
 
 const resolve = createResolver({
   pages: import.meta.glob('../pages/**/*.vue', { eager: true }),
-  extensions: ['.vue'],
+  extensions: ['.vue']
 })
 ```
 
@@ -191,7 +194,7 @@ import { createResolver } from '@inertiajs/astro/client/react'
 
 const resolve = createResolver({
   pages: import.meta.glob('../pages/**/*.{tsx,jsx}', { eager: true }),
-  extensions: ['.tsx', '.jsx'],
+  extensions: ['.tsx', '.jsx']
 })
 ```
 
@@ -202,7 +205,7 @@ import { createResolver } from '@inertiajs/astro/client/svelte'
 
 const resolve = createResolver({
   pages: import.meta.glob('../pages/**/*.svelte', { eager: true }),
-  extensions: ['.svelte'],
+  extensions: ['.svelte']
 })
 ```
 
@@ -210,13 +213,12 @@ const resolve = createResolver({
 
 ### createResolver(options)
 
-Creates a smart component resolver that supports `.client` and `.server` naming conventions.
+Creates a smart component resolver that supports `.client` and `.server` naming conventions for organizational purposes.
 
 #### Options
 
 - `pages` (required): Record<string, any> - Glob import of page components
 - `extensions` (optional): string[] - File extensions to support (default: `['.vue']`)
-- `defaultMode` (optional): 'client' | 'server' - Default rendering mode (default: `'server'`)
 
 #### Returns
 

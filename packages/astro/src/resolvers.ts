@@ -16,21 +16,20 @@ export interface CreateResolverOptions {
    * @example ['.vue'] for Vue, ['.tsx', '.jsx'] for React, ['.svelte'] for Svelte
    */
   extensions?: string[]
-
-  /**
-   * Default rendering mode for components without .client or .server suffix
-   * @default 'server'
-   */
-  defaultMode?: 'client' | 'server'
 }
 
 /**
  * Creates a smart component resolver that supports .client and .server naming conventions
  *
- * This helper automatically resolves components based on their naming:
- * - `Component.client.vue` → client-side rendered
- * - `Component.server.vue` → server-side rendered
- * - `Component.vue` → uses defaultMode (defaults to server-side)
+ * This helper automatically resolves components based on their file naming convention.
+ * The .client and .server suffixes are organizational conventions that help you
+ * categorize components, but don't affect rendering behavior (all Inertia components
+ * are client-side rendered by design).
+ *
+ * Resolution priority:
+ * - `Component.client.vue` (tried first)
+ * - `Component.server.vue` (tried second)
+ * - `Component.vue` (tried last)
  *
  * @example
  * ```ts
@@ -38,23 +37,22 @@ export interface CreateResolverOptions {
  *
  * const resolve = createResolver({
  *   pages: import.meta.glob('./pages/**\/*.vue', { eager: true }),
- *   extensions: ['.vue'],
- *   defaultMode: 'server'
+ *   extensions: ['.vue']
  * })
  *
  * initInertia({ resolve })
  * ```
  */
 export function createResolver(options: CreateResolverOptions): ComponentResolver {
-  const { pages, extensions = ['.vue'], defaultMode = 'server' } = options
+  const { pages, extensions = ['.vue'] } = options
 
   return (name: string) => {
-    // Priority order across all directories and extensions:
-    // 1. .client suffix (client-side)
-    // 2. .server suffix (server-side)
-    // 3. No suffix (uses defaultMode)
+    // Resolution priority order:
+    // 1. .client suffix (organizational convention)
+    // 2. .server suffix (organizational convention)
+    // 3. No suffix (default/standard naming)
     //
-    // Directory priority (for each mode):
+    // Directory priority (for each naming variant):
     // 1. ./pages directory (lowercase)
     // 2. ./Pages directory (capitalized)
     // 3. Root directory (./)
@@ -106,19 +104,19 @@ export function createSimpleResolver(options: { pages: Record<string, any>; exte
   const { pages, extension } = options
 
   return (name: string) => {
-    // Try with .client suffix first
+    // Try with .client suffix first (organizational convention)
     const clientPath = `./pages/${name}.client${extension}`
     if (pages[clientPath]) {
       return pages[clientPath]
     }
 
-    // Try with .server suffix
+    // Try with .server suffix (organizational convention)
     const serverPath = `./pages/${name}.server${extension}`
     if (pages[serverPath]) {
       return pages[serverPath]
     }
 
-    // Try without suffix (defaults to server rendering)
+    // Try without suffix (standard naming)
     const defaultPath = `./pages/${name}${extension}`
     if (pages[defaultPath]) {
       return pages[defaultPath]
