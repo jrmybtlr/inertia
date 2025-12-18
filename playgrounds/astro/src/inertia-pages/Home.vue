@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/vue3'
 </script>
 
 <template>
+
   <Head title="Home" />
 
   <div class="space-y-8">
@@ -20,36 +21,24 @@ import { Head, Link, router } from '@inertiajs/vue3'
         These links use Inertia's SPA navigation - no full page reloads!
       </p>
       <nav class="mt-4 flex flex-wrap gap-3">
-        <Link
-          href="/app/users"
-          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors"
-          prefetch
-        >
+        <Link href="/app/users"
+          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors" prefetch>
           Users
         </Link>
-        <Link
-          href="/app/article"
-          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors"
-          prefetch
-        >
+        <Link href="/app/article"
+          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors" prefetch>
           Article
         </Link>
-        <Link
-          href="/app/form"
-          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors"
-        >
+        <Link href="/app/form"
+          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors">
           Form Demo
         </Link>
-        <Link
-          href="/app/defer"
-          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors"
-        >
+        <Link href="/app/defer"
+          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors">
           Deferred Props
         </Link>
-        <Link
-          href="/app/poll"
-          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors"
-        >
+        <Link href="/app/poll"
+          class="rounded-lg bg-indigo-100 px-4 py-2 text-indigo-700 hover:bg-indigo-200 transition-colors">
           Polling
         </Link>
       </nav>
@@ -78,17 +67,12 @@ import { Head, Link, router } from '@inertiajs/vue3'
     </div>
 
     <div class="flex gap-4">
-      <button
-        type="button"
-        @click="router.clearHistory()"
-        class="rounded-lg bg-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-300 transition-colors"
-      >
+      <button type="button" @click="router.clearHistory()"
+        class="rounded-lg bg-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-300 transition-colors">
         Clear History
       </button>
-      <a
-        href="/"
-        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors"
-      >
+      <a href="/"
+        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">
         Back to Marketing Site (full reload)
       </a>
     </div>

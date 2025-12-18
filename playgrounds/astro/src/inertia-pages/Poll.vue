@@ -15,6 +15,7 @@ const { start, stop, polling } = usePoll(pollInterval.value, {
 </script>
 
 <template>
+
   <Head title="Polling" />
 
   <div class="space-y-6">
@@ -25,35 +26,25 @@ const { start, stop, polling } = usePoll(pollInterval.value, {
           Data automatically refreshes at the configured interval.
         </p>
       </div>
-      <Link
-        href="/app"
-        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors"
-      >
+      <Link href="/app"
+        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">
         &larr; Back
       </Link>
     </div>
 
     <div class="flex items-center gap-4">
-      <button
-        v-if="!polling"
-        @click="start"
-        class="rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700 transition-colors"
-      >
+      <button v-if="!polling" @click="start"
+        class="rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700 transition-colors">
         Start Polling
       </button>
-      <button
-        v-else
-        @click="stop"
-        class="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700 transition-colors"
-      >
+      <button v-else @click="stop"
+        class="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700 transition-colors">
         Stop Polling
       </button>
-      <span
-        :class="[
-          'flex items-center gap-2 rounded-full px-3 py-1 text-sm',
-          polling ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600',
-        ]"
-      >
+      <span :class="[
+        'flex items-center gap-2 rounded-full px-3 py-1 text-sm',
+        polling ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600',
+      ]">
         <span :class="['h-2 w-2 rounded-full', polling ? 'animate-pulse bg-green-500' : 'bg-slate-400']" />
         {{ polling ? 'Polling active' : 'Polling stopped' }}
       </span>

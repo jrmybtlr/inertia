@@ -1,6 +1,6 @@
 # @inertiajs/astro
 
-Use Inertia.js as an island within Astro. Astro owns the page shell (layout, header, footer), while Inertia handles the interactive application region.
+The Astro adapter for Inertia.js - Use Inertia as an island within Astro.
 
 ## Installation
 
@@ -8,263 +8,243 @@ Use Inertia.js as an island within Astro. Astro owns the page shell (layout, hea
 npm install @inertiajs/astro
 # or
 pnpm add @inertiajs/astro
-```
-
-You'll also need the Inertia adapter for your chosen framework:
-
-```bash
-# For React
-npm install @inertiajs/react react react-dom
-
-# For Vue
-npm install @inertiajs/vue3 vue
-
-# For Svelte
-npm install @inertiajs/svelte svelte
+# or
+yarn add @inertiajs/astro
 ```
 
 ## Setup
 
-### 1. Configure the Astro Integration
+### 1. Configure Astro Integration
+
+Add the Inertia integration to your `astro.config.mjs`:
 
 ```js
-// astro.config.mjs
 import { defineConfig } from 'astro/config'
 import inertia from '@inertiajs/astro'
-import react from '@astrojs/react' // or vue/svelte
 
 export default defineConfig({
   integrations: [
-    react(), // Required for your chosen framework
     inertia({
-      framework: 'react', // 'react' | 'vue' | 'svelte'
-      laravelUrl: 'http://localhost:8000', // Your Laravel backend URL
+      framework: 'vue', // or 'react', 'svelte'
+      laravelUrl: 'http://localhost:8000',
     }),
   ],
 })
 ```
 
-### 2. Create Your App Layout
+### 2. Add InertiaIsland to Your Layout
+
+In your Astro page or layout:
 
 ```astro
 ---
-// src/layouts/AppLayout.astro
+import Layout from '../layouts/Layout.astro'
 import InertiaIsland from '@inertiajs/astro/InertiaIsland.astro'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My App</title>
-  </head>
-  <body>
-    <Header />
-    <main>
-      <InertiaIsland fallback="Loading..." />
-    </main>
-    <Footer />
-  </body>
-</html>
+<Layout>
+  <InertiaIsland fallback="Loading..." />
+</Layout>
 ```
 
-### 3. Create a Catch-All Route for App Pages
+### 3. Initialize Inertia Client-Side
 
-```astro
----
-// src/pages/app/[...path].astro
-import AppLayout from '../../layouts/AppLayout.astro'
----
+Create a client-side script to initialize Inertia:
 
-<AppLayout />
-
-<script>
-  import { initInertia } from '@inertiajs/astro/client/react'
-  // or: import { initInertia } from '@inertiajs/astro/client/vue'
-  // or: import { initInertia } from '@inertiajs/astro/client/svelte'
-
-  initInertia({
-    resolve: (name) => {
-      const pages = import.meta.glob('./inertia-pages/**/*.tsx', { eager: true })
-      return pages[`./inertia-pages/${name}.tsx`]
-    },
-  })
-</script>
-```
-
-### 4. Create Your Inertia Page Components
-
-```tsx
-// src/pages/app/inertia-pages/Dashboard.tsx
-import { Head, Link } from '@inertiajs/react'
-
-interface Props {
-  user: { name: string }
-  stats: { visits: number }
-}
-
-export default function Dashboard({ user, stats }: Props) {
-  return (
-    <>
-      <Head title="Dashboard" />
-      <div>
-        <h1>Welcome, {user.name}!</h1>
-        <p>You have {stats.visits} visits.</p>
-        <Link href="/app/settings">Go to Settings</Link>
-      </div>
-    </>
-  )
-}
-```
-
-## Configuration Options
-
-### Integration Options
+#### Vue Example
 
 ```ts
-inertia({
-  // Required: The frontend framework to use
-  framework: 'react' | 'vue' | 'svelte',
+// src/client/app.ts
+import { initInertia } from '@inertiajs/astro/client/vue'
 
-  // The base URL of your Laravel backend
-  // Default: '' (same origin)
-  laravelUrl: 'http://localhost:8000',
-
-  // Include credentials (cookies) in requests
-  // Default: true
-  includeCredentials: true,
-
-  // Progress bar configuration
-  // Set to false to disable
-  progress: {
-    delay: 250,
-    color: '#29d',
-    includeCSS: true,
-    showSpinner: false,
+initInertia({
+  resolve: (name) => {
+    const pages = import.meta.glob('../pages/**/*.vue', { eager: true })
+    return pages[`../pages/${name}.vue`]
   },
 })
 ```
 
-### InertiaIsland Component Props
-
-```astro
-<InertiaIsland
-  id="app"           <!-- Mount element ID (default: 'app') -->
-  class="my-class"   <!-- CSS class for the container -->
-  fallback="Loading..." <!-- Loading text/content -->
-/>
-```
-
-### Client Initialization Options
+#### React Example
 
 ```ts
+// src/client/app.ts
+import { initInertia } from '@inertiajs/astro/client/react'
+
 initInertia({
-  // Mount element ID (default: 'app')
-  id: 'app',
-
-  // Component resolver (required)
-  resolve: (name) => import(`./pages/${name}.tsx`),
-
-  // Override Laravel URL from integration config
-  laravelUrl: 'http://localhost:8000',
-
-  // Override credentials setting
-  includeCredentials: true,
-
-  // Progress bar config (overrides integration config)
-  progress: { color: 'red' },
-
-  // Title callback
-  title: (title) => `${title} - My App`,
-
-  // Pre-fetched initial page data (skip initial fetch)
-  initialPage: { component: 'Dashboard', props: {...}, ... },
+  resolve: (name) => {
+    const pages = import.meta.glob('../pages/**/*.tsx', { eager: true })
+    return pages[`../pages/${name}.tsx`]
+  },
 })
 ```
 
-## Laravel Configuration
+#### Svelte Example
 
-### CORS Setup
+```ts
+// src/client/app.ts
+import { initInertia } from '@inertiajs/astro/client/svelte'
 
-If your Astro frontend and Laravel backend are on different domains, configure CORS:
-
-```php
-// config/cors.php
-return [
-    'paths' => ['*'],
-    'allowed_origins' => ['http://localhost:4321'], // Astro dev server
-    'allowed_methods' => ['*'],
-    'allowed_headers' => ['*'],
-    'supports_credentials' => true,
-];
+initInertia({
+  resolve: (name) => {
+    const pages = import.meta.glob('../pages/**/*.svelte', { eager: true })
+    return pages[`../pages/${name}.svelte`]
+  },
+})
 ```
 
-### Inertia Middleware
+## Smart Component Resolver
 
-Ensure your Laravel routes use the Inertia middleware:
+The smart component resolver supports `.client` and `.server` naming conventions for better developer experience. The resolvers are exported from both the main package and from the framework-specific client modules.
 
-```php
-// routes/web.php
-Route::middleware(['web', 'inertia'])->prefix('app')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/settings', [SettingsController::class, 'index']);
-});
+- `Component.client.vue` → client-side rendered
+- `Component.server.vue` → server-side rendered
+- `Component.vue` → defaults to server-side rendering
+
+### Using createResolver
+
+You can import the resolver from the main package or from the client module:
+
+```ts
+// src/client/app.ts
+// Option 1: Import from main package
+import { createResolver } from '@inertiajs/astro'
+import { initInertia } from '@inertiajs/astro/client/vue'
+
+// Option 2: Import from client module (both available)
+import { initInertia, createResolver } from '@inertiajs/astro/client/vue'
+
+const resolve = createResolver({
+  pages: import.meta.glob('../pages/**/*.vue', { eager: true }),
+  extensions: ['.vue'],
+  defaultMode: 'server', // Components without .client or .server suffix default to server
+})
+
+initInertia({ resolve })
 ```
 
-## Architecture
+### Using createSimpleResolver
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Astro Shell                          │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │                    Header                        │   │
-│  └─────────────────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │              InertiaIsland                       │   │
-│  │  ┌─────────────────────────────────────────┐    │   │
-│  │  │     React/Vue/Svelte Component          │    │   │
-│  │  │     (fetched from Laravel)              │    │   │
-│  │  └─────────────────────────────────────────┘    │   │
-│  └─────────────────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │                    Footer                        │   │
-│  └─────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────┘
+For simpler use cases:
+
+```ts
+// src/client/app.ts
+// Can import from main package or client module
+import { initInertia, createSimpleResolver } from '@inertiajs/astro/client/vue'
+
+const resolve = createSimpleResolver({
+  pages: import.meta.glob('../pages/**/*.vue', { eager: true }),
+  extension: '.vue',
+})
+
+initInertia({ resolve })
 ```
 
-**Flow:**
+## Page Structure Examples
 
-1. User visits `/app/dashboard`
-2. Astro serves the static shell (header, nav, footer)
-3. Client-side JavaScript initializes Inertia
-4. Inertia fetches page data from Laravel via XHR
-5. The component hydrates inside the island
-6. Subsequent navigation uses Inertia's SPA router
+### Traditional Approach
 
-## Use Cases
+Before, you might have organized pages in separate folders:
 
-This integration is ideal for:
+```
+src/
+  pages/
+    astro/
+      dashboard.astro
+      profile.astro
+    inertia/
+      Dashboard.vue
+      Profile.vue
+```
 
-- **Hybrid applications**: Marketing pages, docs, and blog in Astro; app dashboard in Inertia
-- **Gradual migration**: Move parts of a Laravel app to Astro while keeping the interactive core
-- **SEO + Interactivity**: Static, SEO-optimized pages alongside a dynamic authenticated app
+### New Naming Convention
 
-## Framework-Specific Notes
+Now you can use a flat structure with naming conventions:
 
-### React
+```
+src/
+  pages/
+    Dashboard.client.vue     # Client-side rendered
+    Profile.server.vue       # Server-side rendered
+    Settings.vue             # Defaults to server-side
+```
 
-All `@inertiajs/react` features work: `Link`, `useForm`, `usePage`, `Head`, etc.
+## Multiple Frameworks
+
+The resolver works with all supported frameworks:
 
 ### Vue
 
-All `@inertiajs/vue3` features work: `Link`, `useForm`, `usePage`, `Head`, etc.
+```ts
+import { createResolver } from '@inertiajs/astro/client/vue'
+
+const resolve = createResolver({
+  pages: import.meta.glob('../pages/**/*.vue', { eager: true }),
+  extensions: ['.vue'],
+})
+```
+
+### React
+
+```ts
+import { createResolver } from '@inertiajs/astro/client/react'
+
+const resolve = createResolver({
+  pages: import.meta.glob('../pages/**/*.{tsx,jsx}', { eager: true }),
+  extensions: ['.tsx', '.jsx'],
+})
+```
 
 ### Svelte
 
-Supports both Svelte 4 and Svelte 5. All `@inertiajs/svelte` features work.
+```ts
+import { createResolver } from '@inertiajs/astro/client/svelte'
+
+const resolve = createResolver({
+  pages: import.meta.glob('../pages/**/*.svelte', { eager: true }),
+  extensions: ['.svelte'],
+})
+```
+
+## API Reference
+
+### createResolver(options)
+
+Creates a smart component resolver that supports `.client` and `.server` naming conventions.
+
+#### Options
+
+- `pages` (required): Record<string, any> - Glob import of page components
+- `extensions` (optional): string[] - File extensions to support (default: `['.vue']`)
+- `defaultMode` (optional): 'client' | 'server' - Default rendering mode (default: `'server'`)
+
+#### Returns
+
+ComponentResolver function
+
+### createSimpleResolver(options)
+
+Creates a simplified component resolver.
+
+#### Options
+
+- `pages` (required): Record<string, any> - Glob import of page components
+- `extension` (required): string - Single file extension to support
+
+#### Returns
+
+ComponentResolver function
+
+## Component Resolution Priority
+
+The resolver tries to find components in the following order:
+
+1. `./pages/{name}.client.{ext}` - Client-side version
+2. `./pages/{name}.server.{ext}` - Server-side version
+3. `./pages/{name}.{ext}` - Default version (uses `defaultMode`)
+4. `./Pages/{name}.client.{ext}` - Capital Pages directory variants
+5. `./Pages/{name}.server.{ext}`
+6. `./Pages/{name}.{ext}`
 
 ## License
 

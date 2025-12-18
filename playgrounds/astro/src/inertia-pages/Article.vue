@@ -3,15 +3,14 @@ import { Head, Link } from '@inertiajs/vue3'
 </script>
 
 <template>
+
   <Head title="Article" />
 
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <h1 class="text-3xl font-bold text-slate-900">Article</h1>
-      <Link
-        href="/app"
-        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors"
-      >
+      <Link href="/app"
+        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">
         &larr; Back
       </Link>
     </div>
