@@ -16,6 +16,7 @@ defineProps<{
 </script>
 
 <template>
+
   <Head title="Deferred Props" />
 
   <div class="space-y-6">
@@ -26,10 +27,8 @@ defineProps<{
           These sections load asynchronously after the initial page render.
         </p>
       </div>
-      <Link
-        href="/app"
-        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors"
-      >
+      <Link href="/app"
+        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">
         &larr; Back
       </Link>
     </div>

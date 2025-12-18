@@ -1,7 +1,8 @@
 import type { AstroIntegration } from 'astro'
 import type { InertiaAstroConfig, InertiaAstroOptions } from './types'
 
-export type { InertiaAstroOptions, InertiaIslandProps, InitInertiaOptions, ComponentResolver } from './types'
+export { createResolver, createSimpleResolver, type CreateResolverOptions } from './resolvers'
+export type { ComponentResolver, InertiaAstroOptions, InertiaIslandProps, InitInertiaOptions } from './types'
 
 /**
  * Astro integration for Inertia.js
@@ -37,22 +38,7 @@ export default function inertiaAstro(options: InertiaAstroOptions): AstroIntegra
     hooks: {
       'astro:config:setup': ({ injectScript, updateConfig }) => {
         // Inject the configuration as a global variable
-        injectScript(
-          'page',
-          `window.__INERTIA_ASTRO_CONFIG__ = ${JSON.stringify(config)};`,
-        )
-
-        // Configure Vite to dedupe framework packages
-        // This ensures that dynamic imports (from the Astro client) and static imports
-        // (from user's page components) resolve to the same module instance.
-        // Without this, module-level state like headManager won't be shared properly.
-        updateConfig({
-          vite: {
-            resolve: {
-              dedupe: ['vue', '@inertiajs/vue3', '@inertiajs/react', '@inertiajs/svelte', '@inertiajs/core'],
-            },
-          },
-        })
+        injectScript('page', `window.__INERTIA_ASTRO_CONFIG__ = ${JSON.stringify(config)};`)
       },
     },
   }

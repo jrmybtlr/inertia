@@ -156,3 +156,4 @@ function createComponentResolver(resolve: ComponentResolver) {
 }
 
 export { router } from '@inertiajs/core'
+export { createResolver, createSimpleResolver } from '../resolvers'

@@ -56,9 +56,15 @@
   },
   "typesVersions": {
     "*": {
-      "client/react": ["types/client/react.d.ts"],
-      "client/vue": ["types/client/vue.d.ts"],
-      "client/svelte": ["types/client/svelte.d.ts"]
+      "client/react": [
+        "types/client/react.d.ts"
+      ],
+      "client/vue": [
+        "types/client/vue.d.ts"
+      ],
+      "client/svelte": [
+        "types/client/svelte.d.ts"
+      ]
     }
   },
   "scripts": {
@@ -89,12 +95,26 @@
     "svelte": "^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
-    "@inertiajs/react": { "optional": true },
-    "@inertiajs/vue3": { "optional": true },
-    "@inertiajs/svelte": { "optional": true },
-    "react": { "optional": true },
-    "react-dom": { "optional": true },
-    "vue": { "optional": true },
-    "svelte": { "optional": true }
+    "@inertiajs/react": {
+      "optional": true
+    },
+    "@inertiajs/vue3": {
+      "optional": true
+    },
+    "@inertiajs/svelte": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    }
   }
 }

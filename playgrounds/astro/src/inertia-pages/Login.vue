@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3'
 </script>
 
 <template>
+
   <Head title="Login" />
 
   <div class="flex min-h-[60vh] items-center justify-center">
@@ -13,22 +14,16 @@ import { Head, Link } from '@inertiajs/vue3'
       <form class="mt-6 space-y-4">
         <div>
           <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
-          <input
-            id="email"
-            type="email"
+          <input id="email" type="email"
             class="mt-1 block w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="you@example.com"
-          />
+            placeholder="you@example.com" />
         </div>
 
         <div>
           <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-          <input
-            id="password"
-            type="password"
+          <input id="password" type="password"
             class="mt-1 block w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="••••••••"
-          />
+            placeholder="••••••••" />
         </div>
 
         <div class="flex items-center justify-between">
@@ -39,10 +34,8 @@ import { Head, Link } from '@inertiajs/vue3'
           <a href="#" class="text-sm text-indigo-600 hover:underline">Forgot password?</a>
         </div>
 
-        <button
-          type="submit"
-          class="w-full rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 transition-colors"
-        >
+        <button type="submit"
+          class="w-full rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 transition-colors">
           Sign In
         </button>
       </form>

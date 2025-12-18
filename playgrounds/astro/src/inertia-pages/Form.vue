@@ -15,15 +15,14 @@ function submit() {
 </script>
 
 <template>
+
   <Head title="Form Demo" />
 
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <h1 class="text-3xl font-bold text-slate-900">Form Demo</h1>
-      <Link
-        href="/app"
-        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors"
-      >
+      <Link href="/app"
+        class="rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">
         &larr; Back
       </Link>
     </div>
@@ -37,50 +36,31 @@ function submit() {
       <form @submit.prevent="submit" class="mt-6 space-y-4">
         <div>
           <label for="name" class="block text-sm font-medium text-slate-700">Name</label>
-          <input
-            id="name"
-            v-model="form.name"
-            type="text"
+          <input id="name" v-model="form.name" type="text"
             class="mt-1 block w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="Your name"
-          />
+            placeholder="Your name" />
         </div>
 
         <div>
           <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
-          <input
-            id="email"
-            v-model="form.email"
-            type="email"
+          <input id="email" v-model="form.email" type="email"
             class="mt-1 block w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="you@example.com"
-          />
+            placeholder="you@example.com" />
         </div>
 
         <div>
           <label for="message" class="block text-sm font-medium text-slate-700">Message</label>
-          <textarea
-            id="message"
-            v-model="form.message"
-            rows="4"
+          <textarea id="message" v-model="form.message" rows="4"
             class="mt-1 block w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="Your message..."
-          />
+            placeholder="Your message..." />
         </div>
 
         <div class="flex items-center justify-between pt-4">
-          <button
-            type="button"
-            @click="form.reset()"
-            class="text-sm text-slate-500 hover:text-slate-700"
-          >
+          <button type="button" @click="form.reset()" class="text-sm text-slate-500 hover:text-slate-700">
             Reset form
           </button>
-          <button
-            type="submit"
-            :disabled="form.processing"
-            class="rounded-lg bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors"
-          >
+          <button type="submit" :disabled="form.processing"
+            class="rounded-lg bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors">
             {{ form.processing ? 'Submitting...' : 'Submit' }}
           </button>
         </div>

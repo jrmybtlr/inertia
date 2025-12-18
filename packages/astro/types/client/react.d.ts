@@ -20,3 +20,4 @@ import type { InitInertiaOptions } from '../types';
  */
 export declare function initInertia<SharedProps extends PageProps = PageProps>(options: InitInertiaOptions<SharedProps>): Promise<void>;
 export { router } from '@inertiajs/core';
+export { createResolver, createSimpleResolver } from '../resolvers';
